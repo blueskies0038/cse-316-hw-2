@@ -306,6 +306,11 @@ span {
   grid-row: 3 / 4;
 }
 
+#edit-song-form {
+  font-size: 18pt;
+  font-weight: bold;
+}
+
 .confirm-cancel-box {
   grid-column: 1 / 3;
   grid-row: 3 / 4;

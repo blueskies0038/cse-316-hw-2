@@ -19,6 +19,7 @@ import SidebarHeading from './components/SidebarHeading.js';
 import SidebarList from './components/SidebarList.js';
 import Statusbar from './components/Statusbar.js';
 import EditSongModal from './components/EditSongModal';
+import DeleteSongModal from './components/DeleteSongModal';
 
 class App extends React.Component {
     constructor(props) {
@@ -149,6 +150,20 @@ class App extends React.Component {
     }
     editMarkedSong = (key, title, artist, youTubeId) => {
       this.editSong(key, title, artist, youTubeId)
+      this.hideEditSongModal()
+
+    }
+    deleteSong = (key) => {
+      let newList;
+      for (let i = 0; i < this.state.currentList.length; i++) {
+        if (i !== key.index) {
+          newList.add(this.state.currentList.songs[i])
+        }
+      }
+      console.log(newList)
+    }
+    deleteMarkedSong = (key, title, artist, youTubeId) => {
+      this.deleteSong(key, title, artist, youTubeId)
       this.hideEditSongModal()
 
     }
@@ -311,6 +326,26 @@ class App extends React.Component {
         let modal = document.getElementById("edit-song-modal");
         modal.classList.remove("is-visible");
     }
+    markSongForDelete = (keyPair) => {
+      this.setState(prevState => ({
+          currentList: prevState.currentList,
+          listKeyPairMarkedForDeletion : prevState.listKeyPairMarkedForDeletion,
+          songKeyPairMarkedForEdit: prevState.songKeyPairMarkedForEdit,
+          songKeyPairMarkedForDelete: keyPair,
+          sessionData: prevState.sessionData
+      }), () => {
+          // PROMPT THE USER
+          this.showDeleteSongModal();
+      });
+  }
+  showDeleteSongModal() {
+      let modal = document.getElementById("delete-song-modal");
+      modal.classList.add("is-visible");
+  }
+  hideDeleteSongModal() {
+      let modal = document.getElementById("delete-song-modal");
+      modal.classList.remove("is-visible");
+  }
     render() {
         let canAddSong = this.state.currentList !== null;
         let canUndo = this.tps.hasTransactionToUndo();
@@ -342,6 +377,7 @@ class App extends React.Component {
                     currentList={this.state.currentList}
                     moveSongCallback={this.addMoveSongTransaction}
                     editSongCallback={this.markSongForEdit}
+                    deleteSongCallback={this.deleteMarkedSong}
                 />
                 <Statusbar 
                     currentList={this.state.currentList} />
@@ -355,6 +391,11 @@ class App extends React.Component {
                     hideEditSongModalCallback={this.hideEditSongModal}
                     editSongCallback={this.editMarkedSong}
                 />
+                {/*<DeleteSongModal
+                    songKeyPair={this.state.songKeyPairMarkedForDelete}
+                    hideDeleteSongModalCallback={this.hideDeleteSongModal}
+                    deleteSongCallback={this.deleteSong}
+                  /> */}
             </div>
         );
     }
