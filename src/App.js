@@ -38,6 +38,7 @@ class App extends React.Component {
         this.state = {
             listKeyPairMarkedForDeletion : null,
             songKeyPairMarkedForEdit: null,
+            songKeyPairMarkedForDelete: null,
             currentList : null,
             sessionData : loadedSessionData
         }
@@ -154,17 +155,15 @@ class App extends React.Component {
 
     }
     deleteSong = (key) => {
-      let newList;
-      for (let i = 0; i < this.state.currentList.length; i++) {
-        if (i !== key.index) {
-          newList.add(this.state.currentList.songs[i])
-        }
-      }
-      console.log(newList)
+        let deletedSong = this.state.currentList.songs[key.index];
+        const newList = this.state.currentList
+        newList.songs.splice(key.index, 1);
+        this.setStateWithUpdatedList(newList)
+        return deletedSong;
     }
-    deleteMarkedSong = (key, title, artist, youTubeId) => {
-      this.deleteSong(key, title, artist, youTubeId)
-      this.hideEditSongModal()
+    deleteMarkedSong = (key) => {
+      this.deleteSong(key)
+      this.hideDeleteSongModal()
 
     }
     renameList = (key, newName) => {
@@ -377,7 +376,7 @@ class App extends React.Component {
                     currentList={this.state.currentList}
                     moveSongCallback={this.addMoveSongTransaction}
                     editSongCallback={this.markSongForEdit}
-                    deleteSongCallback={this.deleteMarkedSong}
+                    deleteSongCallback={this.markSongForDelete}
                 />
                 <Statusbar 
                     currentList={this.state.currentList} />
@@ -391,11 +390,11 @@ class App extends React.Component {
                     hideEditSongModalCallback={this.hideEditSongModal}
                     editSongCallback={this.editMarkedSong}
                 />
-                {/*<DeleteSongModal
+                <DeleteSongModal
                     songKeyPair={this.state.songKeyPairMarkedForDelete}
                     hideDeleteSongModalCallback={this.hideDeleteSongModal}
-                    deleteSongCallback={this.deleteSong}
-                  /> */}
+                    deleteSongCallback={this.deleteMarkedSong}
+                />
             </div>
         );
     }

@@ -63,6 +63,7 @@ export default class SongCard extends React.Component {
 
     handleDelete = (event) => {
         event.stopPropagation()
+        console.log(this.props.keySongPair)
         this.props.deleteSongCallback(this.props.keySongPair)
     }
 
