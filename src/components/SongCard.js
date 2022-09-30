@@ -54,6 +54,18 @@ export default class SongCard extends React.Component {
         this.props.moveCallback(sourceId, targetId);
     }
 
+    handleEditSong = (event) => {
+        event.stopPropagation()
+        this.props.editSongCallback()
+    }
+
+    handleClick = (event) => {
+        if (event.detail === 2) {
+          event.stopPropagation();
+          this.props.editSongCallback(this.props.keySongPair);
+        }
+    }
+
     getItemNum = () => {
         return this.props.id.substring("playlist-song-".length);
     }
@@ -76,9 +88,15 @@ export default class SongCard extends React.Component {
                 onDragLeave={this.handleDragLeave}
                 onDrop={this.handleDrop}
                 draggable="true"
+                onClick={this.handleClick}
             >
                   {num}. <a href={"https://www.youtube.com/watch?v=" + song.youTubeId} target="_blank" rel="noreferrer">{song.title} by {song.artist}</a>
-                  <input id={"delete-song-" + num} className="list-card-button" type="button" value="✕"></input>
+                  <input 
+                      id={"delete-song-" + num}
+                      className="list-card-button"
+                      type="button"
+                      value="✕"
+                  />
             </div>
         )
     }
