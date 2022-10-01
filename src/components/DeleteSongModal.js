@@ -11,7 +11,7 @@ const DeleteSongModal = (props) => {
   }, [songKeyPair])
 
   const handleDeleteSong = () => {
-    deleteSongCallback(songKeyPair)
+    deleteSongCallback(songKeyPair.index)
   }
 
   return (

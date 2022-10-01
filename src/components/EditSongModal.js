@@ -7,7 +7,7 @@ const EditSongModal = (props) => {
   const [youTubeId, setYouTubeId] = useState("")
 
   const handleEditSong = () => {
-      editSongCallback(songKeyPair, title, artist, youTubeId)
+      editSongCallback(songKeyPair.index, title, artist, youTubeId)
   }
 
   const handleTitleChange = (event) => {
