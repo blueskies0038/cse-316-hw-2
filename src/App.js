@@ -139,6 +139,7 @@ class App extends React.Component {
         }
     }
     editSong = (key, title, artist, youTubeId) => {
+      const oldSong = this.state.currentList.songs[key.index]
       let newSong = {
         title: title,
         artist: artist,
@@ -148,6 +149,7 @@ class App extends React.Component {
       let newList = this.state.currentList
       newList.songs[key.index] = newSong
       this.setStateWithUpdatedList(newList)
+      return oldSong
     }
     editMarkedSong = (key, title, artist, youTubeId) => {
       this.editSong(key, title, artist, youTubeId)
@@ -165,6 +167,15 @@ class App extends React.Component {
       this.deleteSong(key)
       this.hideDeleteSongModal()
 
+    }
+    addSong = () => {
+        const newSong = {
+          title: "Untitled",
+          artist: "Unknown",
+          youTubeId: "dQw4w9WgXcQ"
+        }
+        this.state.currentList.songs.push(newSong)
+        this.setStateWithUpdatedList(this.state.currentList)
     }
     renameList = (key, newName) => {
         let newKeyNamePairs = [...this.state.sessionData.keyNamePairs];
@@ -371,6 +382,7 @@ class App extends React.Component {
                     undoCallback={this.undo}
                     redoCallback={this.redo}
                     closeCallback={this.closeCurrentList}
+                    addSongCallback={this.addSong}
                 />
                 <PlaylistCards
                     currentList={this.state.currentList}
